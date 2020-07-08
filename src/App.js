@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 import FavMovie from './FavMovie';
@@ -97,53 +97,48 @@ const movies = {
     },
 };
 
-class App extends Component {
+const App = (props) => {
+    const usersFav = {};
 
-    constructor(props) {
-        super(props);
-        this.usersFav = {};
-    }
+    profiles.forEach(profile => {
+        const favorite = profile.favoriteMovieID;
+        if (usersFav[favorite]) {
+            usersFav[favorite].push(profile.userID);
+        }
+        else {
+            usersFav[favorite] = [profile.userID];
+        }
+    });
 
-    render() {
 
-        profiles.forEach(profile => {
-            const favorite = profile.favoriteMovieID;
-            if (this.usersFav[favorite]) {
-                this.usersFav[favorite].push(profile.userID);
+
+    return (
+        <div className="App">
+            <header className="App-header">
+                <img src={logo} className="App-logo" alt="logo" />
+                <h1 className="App-title">ReactND - Coding Practice</h1>
+            </header>
+
+            <h2> How Popular is Your Favorite Movie? </h2>
+
+            {Object.keys(movies).map(id => {
+                return (
+
+                    <FavMovie key={id}
+                        users={users}
+                        movies={movies}
+                        usersFav={usersFav}
+                        movieId={id}> </FavMovie>
+
+                )
+            })
             }
-            else {
-                this.usersFav[favorite] = [profile.userID];
-            }
-        });
 
-        
+        </div>
 
-        return (
-            <div className="App">
-                <header className="App-header">
-                    <img src={logo} className="App-logo" alt="logo" />
-                    <h1 className="App-title">ReactND - Coding Practice</h1>
-                </header>
+    );
+};
 
-                
-                {Object.keys(movies).map(id => {
-                    return (
-                       
-                        <FavMovie key ={id}
-                            users={users}
-                            movies={movies}
-                            usersFav={this.usersFav}
-                            movieId={id}> </FavMovie>
-                        
-                    )
-                })
-                }
-                
-            </div>
-
-        );
-    }
-}
 
 export default App;
 
